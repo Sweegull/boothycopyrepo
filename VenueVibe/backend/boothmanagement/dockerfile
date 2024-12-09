@@ -1,0 +1,29 @@
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim-buster
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install system dependencies necessary for psycopg2
+RUN apt-get update && \
+    apt-get install -y build-essential libpq-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the requirements file if you have one (optional)
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install psycopg2 (or any other Python packages your application needs)
+RUN pip install --no-cache-dir psycopg2-binary
+
+# Copy the application source code to the container
+COPY src/ .
+
+# Copy the .env file to the container
+COPY .env .
+
+EXPOSE 8081
+
+# Run the Python script when the container launches
+CMD ["python", "main.py"]

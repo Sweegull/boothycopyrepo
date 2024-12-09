@@ -1,0 +1,6 @@
+services:
+  boothmanagement:
+    build: ./backend/boothmanagement
+    ports:
+      - "8081:8081"
+    restart: on-failure
